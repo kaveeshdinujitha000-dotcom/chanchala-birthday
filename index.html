@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy 20th Birthday Chanchala! 🎉</title>
+  <!-- Canvas Confetti Library for explosive birthday confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease infinite;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating Background Particles */
+    .bg-particle {
+      position: absolute;
+      bottom: -50px;
+      font-size: 1.8rem;
+      animation: floatUp 8s linear infinite;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main Container Card */
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 580px;
+      border-radius: 30px;
+      padding: 35px 25px;
+      text-align: center;
+      box-shadow: 0 25px 50px rgba(255, 105, 180, 0.25), 0 0 20px rgba(255, 255, 255, 0.8);
+      border: 4px solid #ffffff;
+      position: relative;
+      z-index: 10;
+      animation: cardPulse 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes cardPulse {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-8px); }
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(45deg, #ff4757, #ff6b81);
+      color: white;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+      margin-bottom: 15px;
+      animation: pulseGlow 1.5s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      from { transform: scale(1); box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4); }
+      to { transform: scale(1.05); box-shadow: 0 6px 22px rgba(255, 71, 87, 0.8); }
+    }
+
+    h1.title {
+      font-family: 'Fredoka One', cursive;
+      color: #ff3f34;
+      font-size: 2.3rem;
+      margin-bottom: 12px;
+      text-shadow: 2px 2px 0px #ffeaa7;
+      line-height: 1.2;
+    }
+
+    /* Typing Style Header Container */
+    .typing-container {
+      min-height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .typing-text {
+      font-size: 1.25rem;
+      color: #2f3542;
+      font-weight: 600;
+      border-right: 3px solid #ff4757;
+      white-space: normal;
+      overflow: hidden;
+      display: inline-block;
+      padding-right: 4px;
+      animation: blinkCursor 0.75s step-end infinite;
+    }
+
+    @keyframes blinkCursor {
+      from, to { border-color: transparent }
+      50% { border-color: #ff4757; }
+    }
+
+    /* Step Transition Styling */
+    .step {
+      opacity: 1;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .hidden {
+      display: none !important;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    .action-btn {
+      background: linear-gradient(45deg, #ff4757, #ff6b81);
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(255, 71, 87, 0.4);
+      transition: all 0.3s ease;
+      margin-top: 15px;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 15px 30px rgba(255, 71, 87, 0.6);
+    }
+
+    /* MOVING CAKE ARENA */
+    #arena {
+      height: 250px;
+      background: linear-gradient(135deg, #fff9e6, #ffeaa7);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      border: 3px dashed #ffa502;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+      margin: 15px 0;
+    }
+
+    #moving-cake {
+      position: absolute;
+      font-size: 3.8rem;
+      cursor: pointer;
+      user-select: none;
+      transition: top 0.4s ease, left 0.4s ease;
+      top: 80px;
+      left: 180px;
+      filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
+      animation: bounceCake 0.8s infinite alternate;
+    }
+
+    @keyframes bounceCake {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+
+    /* Pop-up Overlay Messages */
+    .game-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: #ff4757;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 20;
+      white-space: nowrap;
+    }
+
+    .game-message.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* RUNNING BUNNY OVERLAY ANIMATION */
+    #bunny-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 100;
+      display: none;
+    }
+
+    .running-bunny {
+      position: absolute;
+      bottom: 20%;
+      left: -150px;
+      font-size: 6rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      filter: drop-shadow(0 15px 15px rgba(0,0,0,0.3));
+    }
+
+    .running-bunny.run {
+      animation: bunnyRun 2.5s ease-in-out forwards;
+    }
+
+    @keyframes bunnyRun {
+      0% {
+        left: -150px;
+        transform: scale(1) rotate(0deg);
+      }
+      50% {
+        left: 45vw;
+        transform: scale(1.4) rotate(-5deg);
+      }
+      100% {
+        left: 110vw;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    /* FINAL WISH SECTION */
+    .wish-card {
+      background: #fff0f3;
+      border-left: 6px solid #ff4757;
+      border-radius: 18px;
+      padding: 22px;
+      text-align: left;
+      line-height: 1.7;
+      color: #2f3542;
+      margin-top: 15px;
+      box-shadow: 0 8px 20px rgba(255, 71, 87, 0.1);
+      animation: fadeIn 1s ease-in;
+    }
+
+    .funny-perks {
+      background: #eccc68;
+      border-radius: 18px;
+      padding: 18px;
+      margin-top: 15px;
+      text-align: left;
+      color: #2f3542;
+      box-shadow: 0 6px 15px rgba(236, 204, 104, 0.4);
+    }
+
+    .funny-perks ul {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Floating Particles -->
+  <div class="bg-particle" style="left: 10%; animation-delay: 0s;">🎈</div>
+  <div class="bg-particle" style="left: 25%; animation-delay: 2s;">🌸</div>
+  <div class="bg-particle" style="left: 50%; animation-delay: 4s;">✨</div>
+  <div class="bg-particle" style="left: 75%; animation-delay: 1s;">🎂</div>
+  <div class="bg-particle" style="left: 90%; animation-delay: 3s;">💖</div>
+
+  <!-- Big Running Bunny with Heart -->
+  <div id="bunny-overlay">
+    <div id="big-bunny" class="running-bunny">
+      ❤️❤️
+    </div>
+  </div>
+
+  <div class="card">
+
+    <!-- STAGE 0: WELCOME PAGE WITH TYPING EFFECT -->
+    <div id="stage0" class="step">
+      <div class="badge">Special Invitation 💌</div>
+      <h1 class="title">Hey Chanchala! 👋</h1>
+      
+      <div class="typing-container">
+        <p class="typing-text" id="typing-welcome"></p>
+      </div>
+
+      <button class="action-btn" onclick="startGame()">Let's Begin The Fun! 🚀</button>
+    </div>
+
+    <!-- STAGE 1: MOVING CAKE MINI GAME (4 ATTEMPTS) -->
+    <div id="stage1" class="step hidden">
+      <div class="badge" style="background: linear-gradient(45deg, #ffa502, #ff7f50);">Catch The Cake 🎂</div>
+      <h1 class="title">Touch The Birthday Cake!</h1>
+      <p style="color: #57606f; font-size: 0.95rem;">Tap on the cake to proceed!</p>
+
+      <div id="arena">
+        <div id="game-msg" class="game-message">Try Again! 😜</div>
+        <div id="moving-cake" onclick="handleCakeTap()">🎂</div>
+      </div>
+      <p id="attempt-tracker" style="font-size: 0.9rem; color: #ff4757; font-weight: 700;">Attempt: 1 / 4</p>
+    </div>
+
+    <!-- STAGE 2: FINAL BIRTHDAY WISH PAGE -->
+    <div id="stage2" class="step hidden">
+      <h1 class="title" style="font-size: 2.5rem;">🎉 Happy 20th Birthday,<br>Chanchala! 🌸✨</h1>
+      <p style="color: #70a1ff; font-weight: 800; font-size: 1.3rem;">Level 20 Unlocked! 🎮🎂</p>
+
+      <div class="wish-card">
+        <p>Dear <strong>Chanchala</strong>,</p>
+        <br>
+        <p>Happy 20th Birthday! 🥳✨</p>
+        <br>
+        <p>I’m so grateful that we met and became friends back in 2025. I truly cherish our friendship and hope we stay this close for many, many more years to come! 💖</p>
+        <br>
+        <p>Wishing you a wonderful future ahead filled with success, endless happiness, love, and all the incredible things you deserve. Keep shining bright!</p>
+      </div>
+
+      <div class="funny-perks">
+        <strong style="color: #d63031; font-size: 1.05rem;">⚠️ Official 20s Terms & Conditions:</strong>
+        <ul>
+          <li>✅ Afternoon naps are now officially categorized as self-care.</li>
+          <li>✅ You can blame all crazy decisions on "being in your early twenties".</li>
+          <li>✅ Calories on your 20th birthday are 100% non-existent! 🍰🍔</li>
+        </ul>
+      </div>
+
+      <button class="action-btn" onclick="triggerConfetti()" style="margin-top: 20px;">More Confetti Blast! 🎊</button>
+    </div>
+
+  </div>
+
+  <script>
+    // 1. Typing Effect Logic for Welcome Page
+    const welcomeText = "Welcome to your 20th Birthday Interactive Portal! We prepared something cute and funny just for you! 🎉";
+    let index = 0;
+    const typingElement = document.getElementById("typing-welcome");
+
+    function typeEffect() {
+      if (index < welcomeText.length) {
+        typingElement.innerHTML += welcomeText.charAt(index);
+        index++;
+        setTimeout(typeEffect, 40);
+      }
+    }
+
+    window.onload = function() {
+      typeEffect();
+    };
+
+    function startGame() {
+      document.getElementById('stage0').classList.add('hidden');
+      document.getElementById('stage1').classList.remove('hidden');
+    }
+
+    // 2. Multi-Attempt Cake Tap Logic
+    let attempts = 0;
+    const cake = document.getElementById('moving-cake');
+    const msg = document.getElementById('game-msg');
+    const arena = document.getElementById('arena');
+    const tracker = document.getElementById('attempt-tracker');
+
+    function moveCakeToNewPosition() {
+      const maxX = arena.clientWidth - 90;
+      const maxY = arena.clientHeight - 90;
+
+      const newX = Math.floor(Math.random() * maxX);
+      const newY = Math.floor(Math.random() * maxY);
+
+      cake.style.left = `${newX}px`;
+      cake.style.top = `${newY}px`;
+    }
+
+    function showPopup(text) {
+      msg.innerText = text;
+      msg.classList.add('show');
+      setTimeout(() => {
+        msg.classList.remove('show');
+      }, 1200);
+    }
+
+    function handleCakeTap() {
+      attempts++;
+
+      if (attempts === 1) {
+        showPopup("Try Again! 😜");
+        moveCakeToNewPosition();
+        tracker.innerText = "Attempt: 2 / 4";
+      } else if (attempts === 2) {
+        showPopup("Harder! 🔥");
+        moveCakeToNewPosition();
+        tracker.innerText = "Attempt: 3 / 4";
+      } else if (attempts === 3) {
+        showPopup("Dear love touch it slowly 💖");
+        moveCakeToNewPosition();
+        tracker.innerText = "Attempt: 4 / 4";
+      } else if (attempts >= 4) {
+        // 4th Attempt: Trigger Bunny Animation
+        cake.style.pointerEvents = "none";
+        
+        // Show Big Bunny Running Overlay
+        const overlay = document.getElementById('bunny-overlay');
+        const bigBunny = document.getElementById('big-bunny');
+        overlay.style.display = 'block';
+        bigBunny.classList.add('run');
+
+        // Transition to Final Page when Bunny reaches center/end
+        setTimeout(() => {
+          document.getElementById('stage1').classList.add('hidden');
+          document.getElementById('stage2').classList.remove('hidden');
+          triggerConfetti();
+        }, 1500);
+      }
+    }
+
+    // Fireworks / Confetti Blast Function
+    function triggerConfetti() {
+      var count = 200;
+      var defaults = { origin: { y: 0.7 } };
+
+      function fire(particleRatio, opts) {
+        confetti(Object.assign({}, defaults, opts, {
+          particleCount: Math.floor(count * particleRatio)
+        }));
+      }
+
+      fire(0.25, { spread: 26, startVelocity: 55 });
+      fire(0.2, { spread: 60 });
+      fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+      fire(0.1, { spread: 120, startVelocity: 45 });
+    }
+  </script>
+</body>
+</html>
