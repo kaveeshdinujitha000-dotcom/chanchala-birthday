@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy 20th Birthday Chanchala! 🎉</title>
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #0f0c20;
+      background: radial-gradient(circle at center, #2d0b1e 0%, #0a0512 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      position: relative;
+      color: #ffffff;
+    }
+
+    /* Sparkle Particle Cursor Effect */
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.2rem;
+      animation: floatSparkle 1s ease-out forwards;
+      z-index: 9999;
+    }
+
+    @keyframes floatSparkle {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -80px) scale(0.2); opacity: 0; }
+    }
+
+    /* Floating Background Magic Particles */
+    .bg-particle {
+      position: absolute;
+      bottom: -50px;
+      font-size: 1.8rem;
+      animation: floatUp 8s linear infinite;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main Container Card (Black & Pink Glassmorphism) */
+    .card {
+      background: rgba(20, 10, 25, 0.85);
+      backdrop-filter: blur(15px);
+      width: 100%;
+      max-width: 580px;
+      border-radius: 30px;
+      padding: 35px 25px;
+      text-align: center;
+      box-shadow: 0 0 35px rgba(255, 42, 109, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 42, 109, 0.4);
+      position: relative;
+      z-index: 10;
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(45deg, #ff2a6d, #ff758c);
+      color: white;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(255, 42, 109, 0.6);
+      margin-bottom: 15px;
+    }
+
+    h1.title {
+      font-family: 'Fredoka One', cursive;
+      color: #ff2a6d;
+      font-size: 2.3rem;
+      margin-bottom: 12px;
+      text-shadow: 0 0 10px rgba(255, 42, 109, 0.5);
+      line-height: 1.2;
+    }
+
+    /* Typing Style Header Container */
+    .typing-container {
+      min-height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .typing-text {
+      font-size: 1.15rem;
+      color: #f1f2f6;
+      font-weight: 500;
+      border-right: 3px solid #ff2a6d;
+      white-space: normal;
+      overflow: hidden;
+      display: inline-block;
+      padding-right: 4px;
+      animation: blinkCursor 0.75s step-end infinite;
+    }
+
+    @keyframes blinkCursor {
+      from, to { border-color: transparent }
+      50% { border-color: #ff2a6d; }
+    }
+
+    .step {
+      opacity: 1;
+      transition: all 0.5s ease;
+    }
+
+    .hidden {
+      display: none !important;
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    .action-btn {
+      background: linear-gradient(45deg, #ff2a6d, #ff7b92);
+      color: white;
+      border: none;
+      padding: 14px 35px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 42, 109, 0.5);
+      transition: all 0.3s ease;
+      margin-top: 15px;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 0 30px rgba(255, 42, 109, 0.8);
+    }
+
+    /* MOVING CAKE ARENA */
+    #arena {
+      height: 250px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      border: 2px dashed #ff2a6d;
+      box-shadow: inset 0 0 15px rgba(255, 42, 109, 0.2);
+      margin: 15px 0;
+    }
+
+    #moving-cake {
+      position: absolute;
+      font-size: 3.8rem;
+      cursor: pointer;
+      user-select: none;
+      transition: top 0.4s ease, left 0.4s ease;
+      top: 80px;
+      left: 180px;
+      filter: drop-shadow(0 0 10px rgba(255, 42, 109, 0.8));
+    }
+
+    .game-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: #ff2a6d;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      box-shadow: 0 0 20px rgba(255, 42, 109, 0.8);
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 20;
+      white-space: nowrap;
+    }
+
+    .game-message.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* CANDLE BLOWING SECTION */
+    .wish-notice {
+      color: #ffd700;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      animation: glowText 1.5s infinite alternate;
+    }
+
+    @keyframes glowText {
+      from { opacity: 0.8; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1.02); }
+    }
+
+    .candle-container {
+      margin: 25px 0;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .candle-cake {
+      font-size: 5rem;
+      position: relative;
+      display: inline-block;
+      filter: drop-shadow(0 0 15px rgba(255, 42, 109, 0.6));
+    }
+
+    .flame {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      animation: flameFlicker 0.4s infinite alternate;
+    }
+
+    @keyframes flameFlicker {
+      0% { transform: translateX(-50%) scale(1); filter: drop-shadow(0 0 5px #fffa65); }
+      100% { transform: translateX(-50%) scale(1.2); filter: drop-shadow(0 0 15px #ff4757); }
+    }
+
+    /* FINAL WISH SECTION */
+    .wish-card {
+      background: rgba(255, 42, 109, 0.1);
+      border-left: 5px solid #ff2a6d;
+      border-radius: 18px;
+      padding: 22px;
+      text-align: left;
+      line-height: 1.7;
+      color: #f1f2f6;
+      margin-top: 15px;
+      box-shadow: 0 0 15px rgba(255, 42, 109, 0.15);
+    }
+
+    .funny-perks {
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 18px;
+      padding: 18px;
+      margin-top: 15px;
+      text-align: left;
+      color: #ffeaa7;
+    }
+
+    .funny-perks ul {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Floating Magic Particles -->
+  <div class="bg-particle" style="left: 10%; animation-delay: 0s;">✨</div>
+  <div class="bg-particle" style="left: 25%; animation-delay: 2s;">💖</div>
+  <div class="bg-particle" style="left: 50%; animation-delay: 4s;">🌸</div>
+  <div class="bg-particle" style="left: 75%; animation-delay: 1s;">✨</div>
+  <div class="bg-particle" style="left: 90%; animation-delay: 3s;">👑</div>
+
+  <div class="card">
+
+    <!-- STAGE 0: WELCOME PAGE WITH TYPING EFFECT -->
+    <div id="stage0" class="step">
+      <div class="badge">Special Invitation 💌</div>
+      <h1 class="title">Hey Chanchala! 👋</h1>
+      
+      <div class="typing-container">
+        <p class="typing-text" id="typing-welcome"></p>
+      </div>
+
+      <button class="action-btn" onclick="startGame()">Let's Begin The Fun! 🚀</button>
+    </div>
+
+    <!-- STAGE 1: MOVING CAKE MINI GAME -->
+    <div id="stage1" class="step hidden">
+      <div class="badge">Catch The Cake 🎂</div>
+      <h1 class="title">Touch The Birthday Cake!</h1>
+      <p style="color: #a4b0be; font-size: 0.95rem;">Tap on the cake to proceed!</p>
+
+      <div id="arena">
+        <div id="game-msg" class="game-message">Try Again! 😜</div>
+        <div id="moving-cake" onclick="handleCakeTap()">🎂</div>
+      </div>
+      <p id="attempt-tracker" style="font-size: 0.9rem; color: #ff2a6d; font-weight: 700;">Attempt: 1 / 3</p>
+    </div>
+
+    <!-- STAGE 2: MAKE A WISH CANDLE PAGE -->
+    <div id="stage2" class="step hidden">
+      <div class="badge">Make A Wish 🕯️</div>
+      <h1 class="title" style="font-size: 2rem;">A Birthday Wish! ✨</h1>
+      
+      <div class="wish-notice">
+        ✨ Before click this make a wish ✨
+      </div>
+
+      <div class="candle-container" onclick="blowCandle()">
+        <div class="candle-cake">
+          <span id="flame" class="flame">🔥</span>
+          🎂
+        </div>
+      </div>
+      
+      <p id="candle-hint" style="font-size: 0.9rem; color: #ff758c; font-weight: 600;">Tap the cake to blow the candle! 🕯️</p>
+    </div>
+
+    <!-- STAGE 3: FINAL BIRTHDAY WISH PAGE -->
+    <div id="stage3" class="step hidden">
+      <h1 class="title" style="font-size: 2.3rem;">🎉 Happy 20th Birthday,<br>Chanchala! 🌸✨</h1>
+      <p style="color: #ff758c; font-weight: 800; font-size: 1.2rem;">Level 20 Unlocked! May your 20s be magical!✨</p>
+
+      <div class="wish-card">
+        <p>Dear <strong>Chanchala</strong>,</p>
+        <br>
+        <p>Happy 20th Birthday! 🥳✨</p>
+        <br>
+        <p>I’m so grateful that we met and became friends back in 2025. I truly cherish our friendship and hope we stay this close for many, many more years to come! 💖</p>
+        <br>
+        <p>Wishing you a wonderful future ahead filled with success, endless happiness, love, and all the incredible things you deserve. Keep shining bright!</p>
+      </div>
+
+      <div class="funny-perks">
+        <strong style="color: #ffd700; font-size: 1.05rem;">⚠️ Official 20s Terms & Conditions:</strong>
+        <ul>
+          <li>✅ Afternoon naps are now officially categorized as self-care.</li>
+          <li>✅ You can blame all crazy decisions on "being in your early twenties".</li>
+          <li>✅ Calories on your 20th birthday are 100% non-existent! 🍰🍔</li>
+        </ul>
+      </div>
+
+      <button class="action-btn" onclick="triggerConfetti()" style="margin-top: 20px;">More Confetti Blast! 🎊</button>
+    </div>
+
+  </div>
+
+  <script>
+    // 1. Sparkle Cursor Effect
+    document.addEventListener('mousemove', createSparkle);
+    document.addEventListener('touchmove', (e) => {
+      createSparkle(e.touches[0]);
+    });
+
+    function createSparkle(e) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.innerHTML = ['✨', '💖', '🌸', '⭐'][Math.floor(Math.random() * 4)];
+      sparkle.style.left = e.clientX + 'px';
+      sparkle.style.top = e.clientY + 'px';
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
+    }
+
+    // 2. Typing Effect
+    const welcomeText = "Welcome to your 20th Birthday Interactive Portal! We prepared something cute and funny just for you! 🎉";
+    let index = 0;
+    const typingElement = document.getElementById("typing-welcome");
+
+    function typeEffect() {
+      if (index < welcomeText.length) {
+        typingElement.innerHTML += welcomeText.charAt(index);
+        index++;
+        setTimeout(typeEffect, 40);
+      }
+    }
+
+    window.onload = function() {
+      typeEffect();
+    };
+
+    function startGame() {
+      document.getElementById('stage0').classList.add('hidden');
+      document.getElementById('stage1').classList.remove('hidden');
+    }
+
+    // 3. Cake Game Attempts
+    let attempts = 0;
+    const cake = document.getElementById('moving-cake');
+    const msg = document.getElementById('game-msg');
+    const arena = document.getElementById('arena');
+    const tracker = document.getElementById('attempt-tracker');
+
+    function moveCakeToNewPosition() {
+      const maxX = arena.clientWidth - 90;
+      const maxY = arena.clientHeight - 90;
+
+      const newX = Math.floor(Math.random() * maxX);
+      const newY = Math.floor(Math.random() * maxY);
+
+      cake.style.left = `${newX}px`;
+      cake.style.top = `${newY}px`;
+    }
+
+    // Custom duration සඳහා duration parameter එකක් එකතු කරන ලදී
+    function showPopup(text, duration = 1200) {
+      msg.innerText = text;
+      msg.classList.add('show');
+      setTimeout(() => {
+        msg.classList.remove('show');
+      }, duration);
+    }
+
+    function handleCakeTap() {
+      attempts++;
+
+      if (attempts === 1) {
+        showPopup("Try Again! 😜", 1200);
+        moveCakeToNewPosition();
+        tracker.innerText = "Attempt: 2 / 3";
+      } else if (attempts === 2) {
+        showPopup("Harder! 🔥", 1200);
+        moveCakeToNewPosition();
+        tracker.innerText = "Attempt: 3 / 3";
+      } else if (attempts >= 3) {
+        // 3rd Attempt එකේදී තත්පර 2ක් (2000ms) පෙන්නලා ඊළඟ Stage එකට යයි
+        cake.style.pointerEvents = "none";
+        showPopup("Dear love touch it slowly 💖", 2000);
+        
+        setTimeout(() => {
+          document.getElementById('stage1').classList.add('hidden');
+          document.getElementById('stage2').classList.remove('hidden');
+        }, 2000);
+      }
+    }
+
+    // 4. Candle Blow Action & Transition to Final Page
+    let candleBlown = false;
+    function blowCandle() {
+      if (!candleBlown) {
+        document.getElementById('flame').style.display = 'none';
+        triggerConfetti();
+        candleBlown = true;
+
+        setTimeout(() => {
+          document.getElementById('stage2').classList.add('hidden');
+          document.getElementById('stage3').classList.remove('hidden');
+          triggerConfetti();
+        }, 1200);
+      }
+    }
+
+    // 5. Confetti Blast
+    function triggerConfetti() {
+      var count = 200;
+      var defaults = { origin: { y: 0.7 } };
+
+      function fire(particleRatio, opts) {
+        confetti(Object.assign({}, defaults, opts, {
+          particleCount: Math.floor(count * particleRatio)
+        }));
+      }
+
+      fire(0.25, { spread: 26, startVelocity: 55 });
+      fire(0.2, { spread: 60 });
+      fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+      fire(0.1, { spread: 120, startVelocity: 45 });
+    }
+  </script>
+</body>
+</html>
